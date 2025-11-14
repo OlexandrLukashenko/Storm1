@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Strom — магазин ігор</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">Strom</div>
+    <div class="controls">
+      <input id="search" placeholder="Пошук ігор..." />
+      <button id="cartBtn">🛒 <span id="cartCount">0</span></button>
+      <button id="loginBtn">Увійти</button>
+      <button id="registerBtn">Реєстрація</button>
+      <a href="profile.html" class="btn ghost">Профіль</a>
+    </div>
+  </header>
+
+  <main>
+    <aside class="filters">
+      <h3>Жанри</h3>
+      <div id="genres">RPG, Action, Шутери</div>
+    </aside>
+
+    <section class="catalog">
+      <div class="toolbar">
+        <h2>Каталог</h2>
+        <select id="sort">
+          <option value="popular">За замовчуванням</option>
+          <option value="price-asc">Ціна ↑</option>
+          <option value="price-desc">Ціна ↓</option>
+          <option value="name">Назва</option>
+        </select>
+      </div>
+      <div id="store" class="store-grid"></div>
+    </section>
+
+    <aside class="cart-panel">
+      <h3>Кошик</h3>
+      <div id="cartList"></div>
+      <div class="cart-footer">
+        <div>Усього: <span id="cartTotal">0 грн</span></div>
+        <button class="btn" id="checkout">Оформити</button>
+      </div>
+    </aside>
+  </main>
+
+  <div id="modalBackdrop" class="modal hidden">
+    <div class="modal-card">
+      <img id="modalImg" src="" alt="" />
+      <div class="modal-info">
+        <h3 id="modalTitle"></h3>
+        <p id="modalDesc"></p>
+        <div id="modalPrice" class="price"></div>
+        <button id="modalAdd" class="btn">Додати в кошик</button>
+        <button id="modalClose" class="btn ghost">Закрити</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

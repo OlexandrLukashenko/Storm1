@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Адмін панель — Strom</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, textarea { width: 300px; margin: 5px 0; }
+    button { margin: 5px 0; padding: 8px 12px; }
+    .game { margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; }
+    .order { margin-bottom: 12px; padding: 8px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+
+<h1>Адмін панель</h1>
+
+<div id="auth">
+  <h3>Увійти (admin)</h3>
+  <input id="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Пароль"><br>
+  <button id="login">Увійти</button>
+  <button id="logout" style="display:none">Вийти</button>
+</div>
+
+<h2>Додати гру</h2>
+<input id="title" placeholder="Назва"><br>
+<input id="price" type="number" placeholder="Ціна"><br>
+<input id="thumb" placeholder="URL картинки (або завантажити файл)"><br>
+<input type="file" id="image"><br>
+<textarea id="desc" placeholder="Опис"></textarea><br>
+<button id="add">Додати (з файлом)</button>
+
+<h2>Ігри</h2>
+<div id="list"></div>
+
+<h2>Замовлення</h2>
+<div id="orders"></div>
+
+<script>
+let token = localStorage.getItem('token') || null;
+
+async function loadGames() {
+  const res = await fetch("http://localhost:3000/games");
+  const data = await res.json();
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  data.forEach(g => {
+    list.innerHTML += `
+      <div class="game">
+        <b>${g.title}</b> — ${g.price} грн<br>
+        <img src="${g.thumb}" width="200"><br>
+        <button onclick="del(${g.id})">Видалити</button>
+      </div>
+    `;
+  });
+}
+
+async function loadOrders() {
+  if (!token) return;
+  const res = await fetch("http://localhost:3000/admin/orders", { headers: { Authorization: "Bearer " + token } });
+  const data = await res.json();
+  const box = document.getElementById('orders');
+  box.innerHTML = '';
+  data.forEach(o => {
+    const items = o.items ? JSON.parse(o.items) : [];
+    box.innerHTML += `<div class="order">
+      <div>Замовлення #${o.id} • ${o.created_at} • ${o.total} грн • Статус: ${o.status}</div>
+      ${items.map(it=>`<div>${it.title} × ${it.qty} — ${it.total} грн</div>`).join('')}
+      <div>
+        <select id="s_${o.id}">
+          <option value="new">new</option>
+          <option value="paid">paid</option>
+          <option value="sent">sent</option>
+          <option value="cancelled">cancelled</option>
+        </select>
+        <button onclick="updateStatus(${o.id})">Оновити статус</button>
+      </div>
+    </div>`;
+  });
+}
+
+async function updateStatus(id) {
+  const sel = document.getElementById('s_' + id);
+  const status = sel.value;
+  await fetch("http://localhost:3000/admin/orders/" + id, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+    body: JSON.stringify({ status })
+  });
+  loadOrders();
+}
+
+async function del(id) {
+  await fetch("http://localhost:3000/games/" + id, { method: "DELETE", headers: { Authorization: "Bearer " + token } });
+  loadGames();
+}
+
+document.getElementById("add").onclick = async () => {
+  const fileEl = document.getElementById('image');
+  const form = new FormData();
+  form.append('title', title.value);
+  form.append('price', price.value);
+  form.append('description', desc.value);
+  if (fileEl.files[0]) form.append('image', fileEl.files[0]);
+  await fetch("http://localhost:3000/games", { method: "POST", headers: { Authorization: "Bearer " + token }, body: form });
+  loadGames();
+};
+
+document.getElementById("login").onclick = async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const res = await fetch("http://localhost:3000/login", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ email, password }) });
+  const data = await res.json();
+  if (data.token) {
+    token = data.token; localStorage.setItem('token', token); alert('Увійшли'); document.getElementById('logout').style.display='inline-block'; loadGames(); loadOrders();
+  } else alert('Помилка');
+};
+
+document.getElementById("logout").onclick = () => { localStorage.removeItem('token'); token = null; alert('Вихід'); document.getElementById('logout').style.display='none'; };
+
+loadGames();
+loadOrders();
+</script>
+
+</body>
+</html>

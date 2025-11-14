@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Профіль — Strom</title>
+  <link rel="stylesheet" href="profile.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">Strom</div>
+    <nav>
+      <a href="index.html">Каталог</a>
+      <a href="profile.html" class="active">Профіль</a>
+      <button id="logoutBtn" class="btn ghost">Вийти</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="profile-card">
+      <h2>Мій профіль</h2>
+      <div class="avatar-row">
+        <img id="avatarImg" src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="avatar" class="avatar"/>
+        <div>
+          <label class="file-label">
+            Оновити аватар
+            <input id="avatarInput" type="file" accept="image/*" />
+          </label>
+        </div>
+      </div>
+
+      <form id="profileForm">
+        <label>Нік</label>
+        <input id="username" type="text" />
+        <label>Email</label>
+        <input id="email" type="email" />
+        <label>Новий пароль (необов’язково)</label>
+        <input id="password" type="password" />
+        <div class="row">
+          <button type="submit" class="btn">Зберегти</button>
+          <button type="button" id="cancelBtn" class="btn ghost">Скасувати</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="orders-card">
+      <h2>Історія покупок</h2>
+      <div id="ordersList" class="orders-list">
+      </div>
+    </section>
+  </main>
+
+  <script src="profile.js"></script>
+</body>
+</html>
