@@ -1,0 +1,28 @@
+:root{
+  --bg:#0b1220; --card:#0f1724; --muted:#94a3b8; --accent:#1e90ff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial;background:var(--bg);color:#e6eef8}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:#071026}
+.topbar .logo{font-weight:700;color:var(--accent)}
+.topbar nav{display:flex;gap:12px;align-items:center}
+.topbar a{color:#cfe9ff;text-decoration:none;padding:6px 8px;border-radius:6px}
+.topbar a.active{background:rgba(255,255,255,0.04)}
+
+.container{display:grid;grid-template-columns:360px 1fr;gap:20px;padding:20px}
+.profile-card, .orders-card{background:var(--card);padding:18px;border-radius:10px}
+.avatar-row{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.avatar{width:96px;height:96px;border-radius:12px;object-fit:cover;border:2px solid rgba(255,255,255,0.04)}
+.file-label{display:inline-block;padding:8px 10px;border-radius:8px;background:#0d2436;cursor:pointer}
+.file-label input{display:none}
+label{display:block;margin-top:8px;color:var(--muted);font-size:13px}
+input[type="text"],input[type="email"],input[type="password"]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff}
+.row{display:flex;gap:10px;margin-top:12px}
+.btn{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+.orders-list{display:flex;flex-direction:column;gap:12px}
+.order{background:#071428;padding:12px;border-radius:8px}
+.order .meta{font-size:13px;color:var(--muted)}
+.order .items{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.item-row{display:flex;justify-content:space-between}
+.empty{color:var(--muted)}
